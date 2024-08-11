@@ -1,2 +1,3 @@
-# vue-design-practice
-从零学习vue设计与实现
+# vue-design-demo
+
+重学vue采坑和避坑场景
