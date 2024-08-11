@@ -1,0 +1,51 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Vue Dynamic Component Example</title>
+
+</head>
+
+<body>
+    <div id="app"></div>
+
+    <script src="https://cdn.jsdelivr.net/npm/vue@3"></script>
+
+    <script>
+        // 定义动态组件
+        const DynamicComponent = {
+            template: `
+                <div>
+                    <h1>{{ count }}</h1>
+
+                    <button @click="count++">Increment</button>
+
+                </div>
+
+            `,
+            data() {
+                return {
+                    count: 0
+                };
+            }
+        };
+
+        // 使用 markRaw 告知 Vue 不要将 DynamicComponent 转换为响应式对象
+        const app = Vue.createApp({
+            data() {
+                return {
+                    currentComponent: Vue.markRaw(DynamicComponent)
+                };
+            },
+            template: '<component :is="currentComponent"></component>'
+        });
+
+        // 挂载应用
+        app.mount('#app');
+    </script>
+
+</body>
+
+</html>

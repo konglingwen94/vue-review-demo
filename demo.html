@@ -1,0 +1,43 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+
+</head>
+
+<body>
+    <div id="app">
+
+        这是vue之外的内容
+        <br>
+        -------------------------
+        <br>
+        <h1>{{ message }}</h1>
+        <button @click="updateMessage">Change Message</button>
+    </div>
+     
+</body>
+<script type="module">
+    import * as Vue from 'https://unpkg.com/vue@3/dist/vue.esm-browser.js';
+    const app = Vue.createApp({
+        setup(props) {
+            const message = Vue.ref('message')
+
+            function updateMessage() {
+                message.value = message.value === "hello vue" ? "messagge" : "hello vue"
+            }
+            return { message, updateMessage }
+        }
+    })
+    const app1 = Vue.createApp()
+    const root = app.mount('#app')
+
+
+     
+     
+</script>
+
+</html>

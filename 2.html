@@ -1,0 +1,50 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Vue 3 Composition API 示例</title>
+</head>
+<body>
+  <!-- Vue 模板 -->
+  <div id="app">
+    <button id="show-before">显示初始化前的内容</button>
+    <button id="show-after">显示初始化后的内容</button>
+    <div id="content"></div>
+  </div>
+
+  <!-- 使用可靠的 CDN 加载 Vue 3 -->
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/vue/3.3.4/vue.global.prod.min.js"></script>
+  
+  <!-- Vue 3 Composition API 示例 -->
+  <script>
+    const { ref } = Vue;
+
+    const app = Vue.createApp({
+      setup() {
+        const isVisible = ref(true);
+        const message = ref('Hello, Vue 3 with Composition API!');
+
+        return { isVisible, message };
+      }
+    });
+
+    app.mount('#app');
+
+    // 模拟初始化前的显示
+    document.getElementById('show-before').addEventListener('click', () => {
+      document.getElementById('content').innerHTML = `
+        <p v-if="isVisible">{{ message }}</p>
+        <p v-if="!isVisible">这个内容在Vue实例初始化前始终显示</p>
+      `;
+    });
+
+    // 显示初始化后的结果
+    document.getElementById('show-after').addEventListener('click', () => {
+      document.getElementById('content').innerHTML = `
+        <p>Hello, Vue 3 with Composition API!</p>
+      `;
+    });
+  </script>
+</body>
+</html>
