@@ -1,49 +1,134 @@
 <!DOCTYPE html>
 <html lang="en">
-  <head>
-    <meta charset="UTF-8" />
-    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Document</title>
-  </head>
-  <body>
-    <div id="app"></div>
-  </body>
-  <script>
-    function render(obj, root) {
-      const el = document.createElement(obj.tag);
-      if (typeof obj.children === "string") {
-        const text = document.createTextNode(obj.children);
-        el.appendChild(text);
-      } else {
-        obj.children.forEach((child) => render(child, el));
-      }
-      root.appendChild(el);
+
+<head>
+  <meta charset="UTF-8" />
+  <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Document</title>
+
+  <style>
+    .node {
+      border: 1px solid #ddd;
+      padding: 10px;
+      margin: 5px;
+      border-radius: 5px;
+      font-family: Arial, sans-serif;
     }
 
-    const obj = {
-      tag: "div",
+    .leaf {
+      padding: 5px;
+      margin: 3px;
+      display: inline-block;
+      border: 1px solid #bbb;
+      border-radius: 3px;
+    }
+
+    .level-1 {
+      background-color: #f0f8ff;
+      /* 浅蓝色 */
+    }
+
+    .level-2 {
+      background-color: #e6f7ff;
+      /* 更浅的蓝色 */
+    }
+
+    .level-3 {
+      background-color: #d9faff;
+      /* 更亮的蓝色 */
+    }
+
+    .node:hover,
+    .leaf:hover {
+      border-color: #00aaff;
+      box-shadow: 0 0 5px rgba(0, 170, 255, 0.5);
+    }
+
+    .node.level-1 {
+      font-weight: bold;
+    }
+
+    .leaf.level-3 {
+      font-style: italic;
+      color: #0077aa;
+    }
+  </style>
+</head>
+
+<body>
+  <div id="app"></div>
+</body>
+<script>
+  function render(obj, root) {
+    const el = document.createElement(obj.tag);
+    if (typeof obj.children === "string") {
+      const text = document.createTextNode(obj.children);
+      el.appendChild(text);
+    } else {
+      obj.children.forEach((child) => render(child, el));
+    }
+    root.appendChild(el);
+  }
+
+  const treeData = [
+    {
+      id: 1,
+      type: "div",
+      props: { class: "node level-1" },
       children: [
         {
-          tag: "h1",
-          children: "This is title",
-        },
-        {
-          tag: "div",
+          id: 2,
+          type: "div",
+          props: { class: "node level-2" },
           children: [
             {
-              tag: "mark",
-              children: "This is Mark content",
+              id: 3,
+              type: "span",
+              props: { class: "leaf level-3" },
+              children: "Node 1.1.1"
             },
             {
-                tag:'span',
-                children:'This is span content'
+              id: 4,
+              type: "span",
+              props: { class: "leaf level-3" },
+              children: "Node 1.1.2"
             }
-          ],
+          ]
         },
-      ],
-    };
+        {
+          id: 5,
+          type: "div",
+          props: { class: "node level-2" },
+          children: [
+            {
+              id: 6,
+              type: "span",
+              props: { class: "leaf level-3" },
+              children: "Node 1.2.1"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      id: 7,
+      type: "div",
+      props: { class: "node level-1" },
+      children: [
+        {
+          id: 8,
+          type: "span",
+          props: { class: "leaf level-2" },
+          children: "Node 2.1"
+        }
+      ]
+    }
+  ];
 
-    render(obj, app);
-  </script>
+  
+
+  render(treeData, app);
+</script>
+
 </html>
