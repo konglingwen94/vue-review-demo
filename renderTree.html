@@ -1,0 +1,111 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>挂载顺序可视化</title>
+  <style>
+    .node {
+      border: 2px solid #0077ff;
+      background-color: #e6f7ff;
+      margin: 10px;
+      padding: 10px;
+      border-radius: 5px;
+      transition: background-color 0.5s, transform 0.5s;
+    }
+    .leaf {
+      border: 1px solid #0077ff;
+      background-color: #d9faff;
+      margin: 5px;
+      padding: 5px;
+      border-radius: 3px;
+      font-style: italic;
+      display: inline-block;
+      transition: background-color 0.5s, transform 0.5s;
+    }
+    .highlight {
+      background-color: #00ff7f !important;
+      transform: scale(1.1);
+    }
+  </style>
+</head>
+<body>
+  <h1>挂载顺序可视化</h1>
+  <div id="app"></div>
+
+  <script>
+    // 数据结构
+    const nodeTree = [
+      {
+        id: 1,
+        type: "div",
+        props: { class: "node" },
+        children: [
+          {
+            id: 2,
+            type: "div",
+            props: { class: "node" },
+            children: [
+              { id: 3, type: "span", props: { class: "leaf" }, children: "Node 1.1.1" },
+              { id: 4, type: "span", props: { class: "leaf" }, children: "Node 1.1.2" },
+            ],
+          },
+          {
+            id: 5,
+            type: "div",
+            props: { class: "node" },
+            children: [
+              { id: 6, type: "span", props: { class: "leaf" }, children: "Node 1.2.1" },
+            ],
+          },
+        ],
+      },
+      {
+        id: 7,
+        type: "div",
+        props: { class: "node" },
+        children: [
+          { id: 8, type: "span", props: { class: "leaf" }, children: "Node 2.1" },
+        ],
+      },
+    ];
+
+    // 递归渲染函数，带延时高亮效果
+    function renderWithDelay(nodeTree, parent, delay = 0) {
+      nodeTree.forEach((node, index) => {
+        setTimeout(() => {
+          const el = document.createElement(node.type);
+          
+          // 设置属性
+          if (node.props) {
+            for (const key in node.props) {
+              el.setAttribute(key, node.props[key]);
+            }
+          }
+
+          // 设置文本内容
+          if (typeof node.children === "string") {
+            el.textContent = node.children;
+          }
+
+          // 挂载到父节点
+          parent.appendChild(el);
+
+          // 添加高亮效果
+          el.classList.add("highlight");
+          setTimeout(() => el.classList.remove("highlight"), 2000);
+
+          // 递归渲染子节点
+          if (Array.isArray(node.children)) {
+            renderWithDelay(node.children, el, delay + (index + 1) * 2500);
+          }
+        }, delay + index * 500);
+      });
+    }
+
+    // 获取根节点并开始渲染
+    const app = document.getElementById("app");
+    renderWithDelay(nodeTree, app);
+  </script>
+</body>
+</html>

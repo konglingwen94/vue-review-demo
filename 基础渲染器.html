@@ -60,18 +60,60 @@
   <div id="app"></div>
 </body>
 <script>
-  function render(obj, root) {
-    const el = document.createElement(obj.tag);
-    if (typeof obj.children === "string") {
-      const text = document.createTextNode(obj.children);
-      el.appendChild(text);
-    } else {
-      obj.children.forEach((child) => render(child, el));
-    }
-    root.appendChild(el);
-  }
 
-  const treeData = [
+  // function render(data, root) {
+
+
+  //   if (Array.isArray(data)) {
+  //     data.forEach(childItem => {
+  //       let el = null
+  //       if (typeof childItem.type === "string") {
+
+  //         el = document.createElement(childItem.type);
+  //       }
+  //       if (typeof childItem.children === "string") {
+  //         const text = document.createTextNode(childItem.children);
+  //         el.appendChild(text);
+  //       } else if (Array.isArray(childItem.children)) {
+  //         // render(childItem.children, el);
+  //         childItem.children.forEach((childNode) => render(childNode, el));
+
+  //       }
+  //       root.appendChild(el);
+  //     })
+  //   }
+
+  // }
+
+  function render(nodeTree, parent) {
+  // 遍历节点树
+  nodeTree.forEach(node => {
+    // 1. 创建当前节点
+    const el = document.createElement(node.type);
+
+    // 2. 设置属性
+    if (node.props) {
+      Object.entries(node.props).forEach(([key, value]) => {
+        el.setAttribute(key, value);
+      });
+    }
+
+    // 3. 处理子节点（递归）
+    if (typeof node.children === "string") {
+      // 如果是文本节点，直接添加
+      el.textContent = node.children;
+    } else if (Array.isArray(node.children)) {
+      // 递归挂载子节点
+      render(node.children, el);
+    }
+
+    // 4. 将当前节点挂载到父节点
+    parent.appendChild(el);
+  });
+}
+
+
+  const nodeTree = [
     {
       id: 1,
       type: "div",
@@ -126,9 +168,9 @@
     }
   ];
 
-  
 
-  render(treeData, app);
+
+  render(nodeTree, app);
 </script>
 
 </html>
